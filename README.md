@@ -1,6 +1,6 @@
 # Deploy as many Django websites as you want with one simple command
 
-This script allows you to set up multiple Django websites easily. It automatically installs all the necessary dependencies (Nginx, Gunicorn, MySQL/MariaDB/PostgreSQL, and Django database connector) on your Ubuntu server, prepares a python virtual environment, and configure the selected database. Just by typing one command in the command line, you get the fully working Django website with a configured database.
+This script allows you to set up multiple Django websites easily. It automatically installs all the necessary dependencies (Nginx, Gunicorn, PostgreSQL, and Django database connector) on your Ubuntu server, prepares a python virtual environment, and configure the selected database. Just by typing one command in the command line, you get the fully working Django website with a configured database.
 
 ![demo](demo2.gif)
 
@@ -10,8 +10,8 @@ This script allows you to set up multiple Django websites easily. It automatical
 2. Create a working directory in `/var/www/$SITENAME`
 3. Create a new Linux user and add it to the sftp group
 4. Assign user permissions to the working directory
-5. Install necessary dependencies: nginx, python3-pip, mysql-server/mariadb-server/postgresql, virtualenv, gunicorn, django, mysql-connector-python/psycopg2
-6. Create a new Django project, database, and configure Django to work with the MySQL/MariaDB/PostgreSQL database
+5. Install necessary dependencies: nginx, python3-pip, postgresql, virtualenv, gunicorn, django, psycopg2
+6. Create a new Django project, database, and configure Django to work with the PostgreSQL database
 7. Create NGINX and Gunicorn config files (a separate config file for each site)
 8. Create `.gitignore` file
 9. Add settings for static and media files
@@ -27,7 +27,7 @@ curl -o addsite https://raw.githubusercontent.com/duarteluis/django-auto-deploy/
 
 This command will clone the script to the current directory, make it executable, and execute with root privileges.
 
-You just need to select a database engine (MySQL, MariaDB, PostgreSQL, or SQLite), enter the desired website and domain name when requested and your website is ready to use!  If you want to add another website, just run the `sudo ./addsite` again.
+You just need to select a database engine (PostgreSQL, or SQLite), enter the desired website and domain name when requested and your website is ready to use!  If you want to add another website, just run the `sudo ./addsite` again.
 
 All the sites will be placed to `/var/www/{SITENAME}` directory. Before running the script, make sure there is no folder in `/var/www` named as the site you are going to create.
 
@@ -50,12 +50,9 @@ deactivate
 
 You can set up as many Django websites as you want with this script. 
 
-The script creates a new MySQL/MariaDB/PostgreSQL database, a new DB user, and adds the necessary DB settings to DATABASES dict in settings.py.
+The script creates a new PostgreSQL database, a new DB user, and adds the necessary DB settings to DATABASES dict in settings.py.
 
 ## Warning
 
 Use the script on your own risk. It was tested only with fresh Ubuntu 20.04 Server installation. If you run it on your already configured server, there might be conflicts with other software installed.
 
-## Django hosting recommendation
-
-If you need a good and affordable hosting for your Django projects, [I would recommend DigitalOcean](https://m.do.co/c/008d3315ed7b) (get $100 in credit for 60 days through my referral link), you can run a few simple Django websites on a single virtual server just for 5$/month. I've tested it on the latest Ubuntu Server 20.04 installed on DigitalOcean 5$/month droplet.
