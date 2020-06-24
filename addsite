@@ -8,24 +8,15 @@ ROOTDIR=/var/www/
 while true
 do
 	echo "Select database server type:
-	1) MySQL
-	2) MariaDB
-	3) PostgreSQL
-	4) SQLite"
+	1) PostgreSQL
+	2) SQLite"
 	read -p "Enter choice [1 - 4] " CHOICE
 	case $CHOICE in
-	1) DBPACKAGE="mysql-server"; break ;;
-	2) DBPACKAGE="mariadb-server"; break ;;
-	3) DBPACKAGE="postgresql postgresql-contrib"; break ;;
-	4) DBPACKAGE=""; break ;;
+	1) DBPACKAGE="postgresql postgresql-contrib"; break ;;
+	2) DBPACKAGE=""; break ;;
 	*) echo -e "${RED}Error...${STD}" && sleep 1
 	esac
 done
-if [[ $DBPACKAGE == "mysql-server" || $DBPACKAGE == "mariadb-server" ]]; then
-    DBCONNECTOR="mysqlclient"
-    DBENGINE="django.db.backends.mysql"
-    DBPORT="3306"
-fi
 if [[ $DBPACKAGE == "postgresql postgresql-contrib" ]]; then
     DBCONNECTOR="psycopg2-binary"
     DBENGINE="django.db.backends.postgresql_psycopg2"
@@ -62,7 +53,7 @@ rm ./tmp
 
 
 # Install necessary dependencies and log to deploy.log
-echo "Installing Nginx, Python pip, and MySQL server..."
+echo "Installing Nginx, Python pip, and Posgresql server..."
 apt install -y nginx python3-pip $DBPACKAGE libmysqlclient-dev &> $HOMEDIR/deploy.log
 pip3 install virtualenv >> $HOMEDIR/deploy.log
 
@@ -136,14 +127,6 @@ deactivate
 systemctl start gunicorn_$SITENAME
 systemctl enable gunicorn_$SITENAME
 
-if [[ $DBPACKAGE == "mysql-server" || $DBPACKAGE == "mariadb-server" ]]; then
-	# Create a database and add the necessary config lines to app/settings.py
-	SQL="CREATE DATABASE IF NOT EXISTS $SITENAME DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-	CREATE USER '$SITENAME'@'localhost' IDENTIFIED BY '$DBPASS';
-	GRANT ALL PRIVILEGES ON $SITENAME.* TO '$SITENAME'@'localhost';
-	FLUSH PRIVILEGES;"
-	mysql -uroot -e "$SQL"
-fi
 if [[ $DBPACKAGE == "postgresql postgresql-contrib" ]]; then
     su postgres -c "createuser -S -D -R -w $SITENAME"
     su postgres -c "psql -c \"ALTER USER $SITENAME WITH PASSWORD '$DBPASS';\""
@@ -169,8 +152,8 @@ mkdir -p ${HOMEDIR}/media/
 # Print passwords and helpers
 echo "
 Done!
-MySQL/SFTP username: $SITENAME
-MySQL password: $DBPASS
+Postgresql/SFTP username: $SITENAME
+Postgresql password: $DBPASS
 SFTP password: $SFTPPASS
 
 Things to do:
