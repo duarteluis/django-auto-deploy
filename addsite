@@ -10,7 +10,7 @@ do
 	echo "Select database server type:
 	1) PostgreSQL
 	2) SQLite"
-	read -p "Enter choice [1 - 4] " CHOICE
+	read -p "Enter choice [1 - 2] " CHOICE
 	case $CHOICE in
 	1) DBPACKAGE="postgresql postgresql-contrib"; break ;;
 	2) DBPACKAGE=""; break ;;
