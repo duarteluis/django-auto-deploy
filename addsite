@@ -159,8 +159,8 @@ SFTP password: $SFTPPASS
 Things to do:
 Go to the working directory: cd $HOMEDIR
 Activate virtual environment: source $HOMEDIR/env/bin/activate
-Create Django super user: ./manage.py createsuperuser
 Apply migrations: ./manage.py makemigrations && ./manage.py migrate
+Create Django super user: ./manage.py createsuperuser
 "
 
 # Create .gitignore file
