@@ -55,7 +55,9 @@ rm ./tmp
 # Install necessary dependencies and log to deploy.log
 echo "Installing Nginx, Python pip, and Posgresql server..."
 apt install -y python3-pip python3-dev libpq-dev $DBPACKAGE nginx curl &> $HOMEDIR/deploy.log
-pip3 install virtualenv >> $HOMEDIR/deploy.log
+sudo -H pip3 install --upgrade pip
+sudo -H pip3 install virtualenv
+# pip3 install virtualenv >> $HOMEDIR/deploy.log
 
 # Setup Python virtual environment, Django, Gunicorn, and Python MySQL connector
 mkdir -p $HOMEDIR/env 
