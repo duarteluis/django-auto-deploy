@@ -132,7 +132,10 @@ systemctl enable gunicorn_$SITENAME
 if [[ $DBPACKAGE == "postgresql postgresql-contrib" ]]; then
     su postgres -c "createuser -S -D -R -w $SITENAME"
     su postgres -c "psql -c \"ALTER USER $SITENAME WITH PASSWORD '$DBPASS';\""
-    su postgres -c "createdb --owner $SITENAME $SITENAME"
+    su postgres -c "psql -c \"ALTER ROLE $SITENAME SET client_encoding TO 'utf8';\""
+    su postgres -c "psql -c \"ALTER ROLE myprojectuser SET default_transaction_isolation TO 'read committed';\""
+    su postgres -c "psql -c \ALTER ROLE myprojectuser SET timezone TO 'UTC';"
+    su postgres -c "createdb --owner $SITENAME $SITENAME"   
 fi
 if [[ $DBPACKAGE != "" ]]; then
 	FINDTHIS="'default': {"
